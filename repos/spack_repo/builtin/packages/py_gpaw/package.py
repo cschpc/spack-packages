@@ -54,6 +54,7 @@ class PyGpaw(PythonPackage, CudaPackage):
 
     with when("@26.7.0:"):
         depends_on("cxx", type="build")
+        depends_on("py-pybind11@2.6.2:", type="build")
         depends_on("elpa@2025.06.002:", type=("build", "run"), when="+elpa")
 
     with when("@26.7.0"):
@@ -147,7 +148,7 @@ class PyGpaw(PythonPackage, CudaPackage):
 
         if "+elpa" in spec:
             libs += spec["elpa"].libs
-            include_dirs.append(spec["elpa"].prefix.include)
+            include_dirs.extend(spec["elpa"].headers.directories)
             bools += "elpa = True\n"
             runtime_library_dirs += spec["elpa"].libs.directories
 
